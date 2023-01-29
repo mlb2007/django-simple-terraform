@@ -1,33 +1,33 @@
-resource "aws_ecs_cluster" "production" {
-  name = "${var.ecs_cluster_name}-cluster"
-}
-
-resource "aws_launch_configuration" "ecs" {
-  name                        = "${var.ecs_cluster_name}-cluster"
-  image_id                    = lookup(var.amis, var.region)
-  instance_type               = var.instance_type
-  security_groups             = [aws_security_group.ecs.id]
-  iam_instance_profile        = aws_iam_instance_profile.ecs.name
-  key_name                    = aws_key_pair.production.key_name
-  associate_public_ip_address = true
-  user_data                   = "#!/bin/bash\necho ECS_CLUSTER='${var.ecs_cluster_name}-cluster' > /etc/ecs/ecs.config"
-}
-
-## deprecated, use templatefile as shown below
-#data "template_file" "app" {
-#  template = file("templates/django_app.json.tpl")
-#
-#  vars = {
-#    docker_image_url_django = var.docker_image_url_django
-#    region                  = var.region
-#  }
-#}
-
 locals {
     app = templatefile("templates/django_app.json.tftpl", {
     docker_image_url_django = var.docker_image_url_django
     region                  = var.region
   })
+  user_data = templatefile("templates/user_data.tftpl", {
+      ecs_cluster_name = var.ecs_cluster_name
+  })
+}
+
+resource "aws_ecs_cluster" "production" {
+  name = "${var.ecs_cluster_name}-cluster"
+}
+
+resource "aws_launch_template" "ecs" {
+  #name_prefix = "${var.ecs_cluster_name}-cluster"
+  name = "${var.ecs_cluster_name}-cluster"
+  disable_api_termination = true
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ecs.name
+  }
+  image_id = lookup(var.amis, var.region)
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type = var.instance_type
+  key_name = aws_key_pair.production.key_name
+  vpc_security_group_ids = [aws_security_group.ecs.id]
+  user_data = "${base64encode(local.user_data)}"
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 

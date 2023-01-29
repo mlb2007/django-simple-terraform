@@ -97,4 +97,7 @@ variable "autoscale_desired" {
   default     = "4"
 }
 
+variable "bucket_name" {
+  default = "terraform-access-log-bucket-django-app"
+}
 
