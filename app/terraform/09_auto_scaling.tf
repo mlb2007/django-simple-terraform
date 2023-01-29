@@ -6,7 +6,8 @@ resource "aws_autoscaling_group" "ecs-cluster" {
   health_check_type    = "EC2"
  
   target_group_arns    = [aws_alb_target_group.default-target-group.arn]
-  
+
+  # used to place EC2 instances spwaned  
   vpc_zone_identifier  = [aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id]
 
   lifecycle {
