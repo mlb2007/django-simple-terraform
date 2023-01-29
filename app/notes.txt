@@ -1,0 +1,20 @@
+# Note the account ID in everything ...
+# Login to AWS ECR. The user name is AWS 
+aws ecr get-login-password --region us-west-2 --profile default | docker login --username AWS --password-stdin 072507290151.dkr.ecr.us-west-2.amazonaws.com
+
+# Assuming that we have a docker file Dockerfile, we build image and push it to
+# AWS as follows:
+docker build -t 072507290151.dkr.ecr.us-west-2.amazonaws.com/django-app:latest .
+
+# Go to web console and make sure there exists a repository called
+# "django-app". The "latest" will be a new tag under django-app in AWS
+
+docker push 072507290151.dkr.ecr.us-west-2.amazonaws.com/django-app:latest
+
+# How to find ECS optimized images with Docker pre-installed:
+Check here at: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/retrieve-ecs-optimized_AMI.html
+The CLI command is: aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended --region us-west-2
+
+
+
+
