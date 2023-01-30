@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "ecs-cluster" {
   min_size             = var.autoscale_min
   max_size             = var.autoscale_max
   desired_capacity     = var.autoscale_desired
-  health_check_type    = "EC2"
+  health_check_type    = "ELB"
  
   target_group_arns    = [aws_alb_target_group.default-target-group.arn]
 

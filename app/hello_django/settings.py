@@ -40,10 +40,12 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'hello_django.middleware.HealthCheckMiddleware',  # new
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    
+    'hello_django.middleware.HealthCheckMiddleware',  # new
+    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
