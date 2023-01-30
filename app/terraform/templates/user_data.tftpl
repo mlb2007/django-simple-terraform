@@ -2,3 +2,17 @@
 
 echo ECS_CLUSTER=${ecs_cluster_name} > /etc/ecs/ecs.config
 
+yum update -y
+
+amazon-linux-extras install docker
+
+service docker start
+
+usermod -a -G docker ec2-user
+
+chkconfig docker on
+
+# ssh server
+yum -y install openssh-server openssh-clients
+
+systemctl start sshd

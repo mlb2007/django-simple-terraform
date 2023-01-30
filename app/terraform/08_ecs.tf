@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "app" {
   family                = "django-app"
   
   container_definitions =  local.app
-
+ 
 }
 
 

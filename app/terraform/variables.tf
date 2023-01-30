@@ -67,7 +67,7 @@ variable "ssh_pubkey_file" {
 variable "amis" {
   description = "Which AMI to spawn."
   default = {
-    us-west-2 = "ami-014cdb1bfb3b2584f"
+    us-west-2 = "ami-06e85d4c3149db26a"
   }
 }
 variable "instance_type" {
@@ -80,7 +80,7 @@ variable "docker_image_url_django" {
 
 variable "app_count" {
   description = "Number of Docker containers to run"
-  default     = 2
+  default     = 1
 }
 
 # auto scaling
