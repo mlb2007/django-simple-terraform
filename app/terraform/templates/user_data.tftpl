@@ -1,18 +1,44 @@
 #!/bin/bash
 
-echo ECS_CLUSTER=${ecs_cluster_name} > /etc/ecs/ecs.config
+sudo yum update -y
+sudo yum install -y amazon-linux-extras
 
-yum update -y
+# docker 
+sudo amazon-linux-extras install docker
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+sudo chmod 666 /var/run/docker.sock
 
-amazon-linux-extras install docker
+# webserver
+sudo amazon-linux-extras install nginx1 -y
 
-service docker start
+# make webserver a reverse proxy routing to Django WSGI server
+sudo mkdir -p /etc/nginx/sites_available  
+sudo cat > /etc/nginx/sites_available/app <<EOL
+server {
+    listen 80;
+    server_name $http_host;
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_redirect http://127.0.0.1:8000 $http_host;
+    }
+}
+EOL
 
-usermod -a -G docker ec2-user
+sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled
 
-chkconfig docker on
+sudo systemctl enable nginx
+sudo systemctl start nginx
 
-# ssh server
-yum -y install openssh-server openssh-clients
+# Finally, we need to open up our firewall to normal traffic on port 80. 
+# Since we no longer need access to the development server, we can remove the rule to open port 8000 as well:
+sudo ufw delete allow 8000
+sudo ufw allow 'Nginx Full'
 
-systemctl start sshd
+sudo mkdir -p /etc/ecs
+echo ECS_CLUSTER="${ecs_cluster_name}-cluster" > /etc/ecs/ecs.config
+
+

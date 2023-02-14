@@ -4,7 +4,13 @@ variable "region" {
   default     = "us-west-2"
 }
 
+variable "aws_profile" {
+  description = "The AWS profile to use."
+  default     = "default"
+}
+
 # networking
+
 variable "public_subnet_1_cidr" {
   description = "CIDR Block for Public Subnet 1"
   default     = "10.0.1.0/24"
@@ -35,13 +41,6 @@ variable "health_check_path" {
 }
 
 
-# ecs
-
-variable "ecs_cluster_name" {
-  description = "Name of the ECS cluster"
-  default     = "production"
-}
-
 # logs
 
 variable "log_retention_in_days" {
@@ -55,7 +54,13 @@ variable "ssh_pubkey_file" {
   default     = "~/.ssh/id_rsa.pub"
 }
 
+
 # ecs
+
+variable "ecs_cluster_name" {
+  description = "Name of the ECS cluster"
+  default     = "production"
+}
 
 # with docker installed, got info by executing:
 # aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended --region us-west-2
@@ -67,9 +72,11 @@ variable "ssh_pubkey_file" {
 variable "amis" {
   description = "Which AMI to spawn."
   default = {
-    us-west-2 = "ami-06e85d4c3149db26a"
+    #us-west-2 = "ami-06e85d4c3149db26a"
+    us-west-2 = "ami-014cdb1bfb3b2584f"  
   }
 }
+
 variable "instance_type" {
   default = "t2.micro"
 }
@@ -80,7 +87,7 @@ variable "docker_image_url_django" {
 
 variable "app_count" {
   description = "Number of Docker containers to run"
-  default     = 1
+  default     = 2
 }
 
 # auto scaling

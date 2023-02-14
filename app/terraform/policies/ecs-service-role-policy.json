@@ -7,10 +7,11 @@
         "elasticloadbalancing:Describe*",
         "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
         "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
-        "ec2:Describe*",
-        "ec2:AuthorizeSecurityGroupIngress",
         "elasticloadbalancing:RegisterTargets",
-        "elasticloadbalancing:DeregisterTargets"
+        "elasticloadbalancing:DeregisterTargets",
+        "ec2:*",
+        "ecs:*",
+        "elasticloadbalancing:*"
       ],
       "Resource": [
         "*"

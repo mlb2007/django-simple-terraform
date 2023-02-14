@@ -8,3 +8,4 @@ resource "aws_cloudwatch_log_stream" "django-log-stream" {
   log_group_name = aws_cloudwatch_log_group.django-log-group.name
 }
 
+

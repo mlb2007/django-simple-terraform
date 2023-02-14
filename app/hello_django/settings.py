@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$x)m184a4tx+%6#lma4$k%%^2ng=+x*8%$#*f&e_j1%p!81jmu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,11 +40,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'hello_django.middleware.HealthCheckMiddleware',  # new
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    
-    'hello_django.middleware.HealthCheckMiddleware',  # new
     
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -119,6 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

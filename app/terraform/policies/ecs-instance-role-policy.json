@@ -11,7 +11,8 @@
         "cloudwatch:*",
         "s3:*",
         "rds:*",
-        "logs:*"
+        "logs:*",
+        "ecs-tasks:*"
       ],
       "Resource": "*"
     }
